@@ -18,12 +18,17 @@ fun main() {
         batteryPacks.add(batteryPack.map { it.digitToInt() })
     }
     var totalSum = 0
+    var totalSumpt2 = 0L
 
     batteryPacks.forEach { batteryPack ->
-
         totalSum+= findMaximumBatteryInPack(batteryPack)
     }
-    println(totalSum)
+   // println(totalSum) pt1
+
+    batteryPacks.forEach { batteryPack ->
+        totalSumpt2 += findMaximumBatteryInPackpt2(batteryPack)
+    }
+    println(totalSumpt2)
 
 }
 
@@ -43,4 +48,22 @@ fun findMaximumBatteryInPack(batteryPack: List<Int>): Int {
             maximumJoltage = "$leftjoltage$rightJoltage".toInt()
     }
     return maximumJoltage
+}
+
+fun findMaximumBatteryInPackpt2(batteryPack: List<Int>): Long {
+    var maxvoltage = ""
+    var digitsNeeded = 12
+    var tempArray: List<Int>
+    var currentPosition = 0
+
+    while (maxvoltage.length != 12) {
+        val searchRange = batteryPack.size - digitsNeeded
+        tempArray = batteryPack.subList(currentPosition, searchRange + 1)
+        val maxInArray = tempArray.max()
+        currentPosition += tempArray.indexOf(maxInArray) + 1
+        maxvoltage += "$maxInArray"
+        digitsNeeded--
+    }
+    return maxvoltage.toLong()
+
 }
